@@ -1,0 +1,44 @@
+{
+  "name": "goal-loop",
+  "version": "0.1.0",
+  "description": "从澄清需求、规划到自动化构建的 Claude Code skill 流水线 CLI —— 想清楚 → 写下来 → 干出来。",
+  "bin": {
+    "goal-loop": "bin/cli.js"
+  },
+  "files": [
+    "bin/",
+    "skill/",
+    "README.md"
+  ],
+  "keywords": [
+    "claude-code",
+    "claude",
+    "ralph-loop",
+    "ai-coding",
+    "automation",
+    "skill",
+    "brainstorming",
+    "planning",
+    "agent",
+    "cli"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "scripts": {
+    "prepublishOnly": "node bin/cli.js --version"
+  },
+  "author": "zhangjiangfeng",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AragornZJF/goal-loop.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AragornZJF/goal-loop/issues"
+  },
+  "homepage": "https://github.com/AragornZJF/goal-loop#readme"
+}
