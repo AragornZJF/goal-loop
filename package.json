@@ -1,6 +1,6 @@
 {
   "name": "goal-loop",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "从澄清需求、规划到自动化构建的 Claude Code skill 流水线 CLI —— 想清楚 → 写下来 → 干出来。",
   "bin": {
     "goal-loop": "bin/cli.js"

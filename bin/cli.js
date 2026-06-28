@@ -194,6 +194,7 @@ function cmdHelp() {
     '从澄清需求、规划到自动化构建的 Claude Code skill 流水线 CLI。',
     '',
     '用法：',
+    '  goal-loop                                 一键安装：默认在当前目录初始化 skill',
     '  goal-loop init [target-dir] [--force]   生成 skill + wrapper 脚手架（默认当前目录）',
     '  goal-loop build [N]                      Phase 3：无头构建循环（透传到 ./loop.sh build）',
     '  goal-loop plan  [N]                      Phase 2：无头规划循环（透传到 ./loop.sh plan）',
@@ -202,6 +203,7 @@ function cmdHelp() {
     '  goal-loop --version, -v                  显示版本',
     '',
     '示例：',
+    '  npx goal-loop              # 一键安装（推荐）',
     '  goal-loop init .           # 在当前目录初始化',
     '  goal-loop build 20         # 最多构建 20 轮',
     '  goal-loop plan 5           # 最多规划 5 轮',
@@ -221,7 +223,17 @@ function cmdVersion() {
 // ─── 路由 ───
 function main(argv) {
   const args = argv.slice(2);
-  if (args.length === 0) { cmdHelp(); return; }
+  const first = args[0];
+
+  // 保留 --help / --version 的显式响应
+  if (first === '--help' || first === '-h' || first === 'help') { return cmdHelp(); }
+  if (first === '--version' || first === '-v' || first === 'version') { return cmdVersion(); }
+
+  // npx goal-loop 一键安装：无子命令 或 以 flag 开头（如 --force）时默认执行 init
+  if (args.length === 0 || (first && first.startsWith('-'))) {
+    log('未指定子命令，默认在当前目录初始化 skill...\n');
+    return cmdInit(args);
+  }
 
   const cmd = args[0];
   const rest = args.slice(1);
@@ -231,12 +243,6 @@ function main(argv) {
     case 'build': return cmdBuild(rest);
     case 'plan': return cmdPlan(rest);
     case 'clean': return cmdClean(rest);
-    case '--help':
-    case '-h':
-    case 'help': return cmdHelp();
-    case '--version':
-    case '-v':
-    case 'version': return cmdVersion();
     default:
       process.stderr.write('未知命令：' + cmd + '\n运行 goal-loop --help 查看可用命令。\n');
       process.exit(1);

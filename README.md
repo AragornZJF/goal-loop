@@ -14,10 +14,16 @@
 
 ---
 
-## 安装
+## 安装（推荐 npx 一键安装）
 
 ```bash
-npm install -g goal-loop
+npx goal-loop
+```
+
+这会把 `.claude/skills/goal-loop/` 复制到当前项目。已安装过想覆盖，加 `--force`：
+
+```bash
+npx goal-loop --force
 ```
 
 > 需要 Node.js ≥ 18。
@@ -30,7 +36,7 @@ npm install -g goal-loop
 
 ```bash
 cd your-project
-goal-loop init .
+npx goal-loop
 ```
 
 这会在当前目录生成：
@@ -77,6 +83,7 @@ goal-loop plan 5       # Phase 2：无头规划，最多 5 轮
 
 | 命令 | 说明 |
 |---|---|
+| `goal-loop` / `npx goal-loop` | 一键安装：默认在当前目录生成 skill + wrapper |
 | `goal-loop init [dir] [--force]` | 在目标目录（默认当前目录）生成 skill + wrapper。`--force` 覆盖已存在文件 |
 | `goal-loop build [N]` | 透传到 `./loop.sh build`，无头构建循环（`N` = 最大轮次） |
 | `goal-loop plan [N]` | 透传到 `./loop.sh plan`，无头规划循环（仅迭代计划，不实现代码） |
