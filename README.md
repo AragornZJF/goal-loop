@@ -1,8 +1,8 @@
 # goal-loop
 
-> 从**澄清需求**、**规划**到**自动化构建**的 Claude Code skill 流水线 CLI —— 想清楚 → 写下来 → 干出来。
+> 一个从需求、规划、到自动化构建代码交付的技能。
 
-`goal-loop` 把三套方法论融合为一条流水线，让 AI 替你完成「想清楚 → 写下来 → 干出来」：
+`goal-loop` 把需求、规划、到自动化构建代码交付融合为标准化工作流，让Agent 替你完成「想清楚 → 写下来 → 自动化实现」全流程：
 
 | 层 | 方法论 | 做什么 | 产出 |
 |---|---|---|---|
@@ -76,6 +76,77 @@ goal-loop plan 5       # Phase 2：无头规划，最多 5 轮
 ```
 
 首次运行 `loop.sh` 会自动创建 `AGENTS.md` / `build/` / `specs/`，并尝试从 `build/package.json` 检测 build/test/lint 命令填入 `AGENTS.md`。
+
+---
+
+## 完整示例：从一句话到可运行代码
+
+假设你想做一个「番茄钟 CLI」：
+
+### 1. 创建空项目并初始化 skill
+
+```bash
+mkdir tomato-clock && cd tomato-clock
+npx goal-loop
+```
+
+当前目录会生成：
+
+```
+tomato-clock/
+├── .claude/skills/goal-loop/
+├── loop.sh
+└── clean-state.sh
+```
+
+### 2. Phase 1：澄清需求
+
+在 Claude Code 里说：
+
+> 帮我**探索需求**：我想做一个命令行番茄钟工具，可以设置 25 分钟工作、5 分钟休息，并显示剩余时间。
+
+Claude 会反向提问，最终输出类似 `specs/tomato-clock.md` 的需求文档。
+
+### 3. Phase 2：生成实现计划
+
+继续说：
+
+> 根据需求**写实现计划**。
+
+Claude 会生成 `IMPLEMENTATION_PLAN.md`，列出任务清单，例如：
+
+- 创建 `package.json` 和 CLI 入口
+- 实现倒计时显示
+- 添加工作/休息模式切换
+- 编写基础测试
+
+### 4. Phase 3：无头构建循环
+
+运行：
+
+```bash
+goal-loop build 10
+```
+
+`loop.sh` 会启动最多 10 轮构建循环，每轮：
+
+1. 读取 `IMPLEMENTATION_PLAN.md`
+2. 选一个未完成任务
+3. 让 Claude 实现 + 测试
+4. `git commit` + `git push`
+5. 清空上下文，进入下一轮
+
+循环结束后，你会得到可运行的代码、测试和完整的 git 历史。
+
+### 5. 清理状态（可选）
+
+如果想从零重来：
+
+```bash
+goal-loop clean --confirm
+```
+
+这会删除 `specs/`、`IMPLEMENTATION_PLAN.md`、`build/` 等状态文件。
 
 ---
 
